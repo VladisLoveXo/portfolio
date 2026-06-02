@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Владислав Панов — AI Fullstack Engineer</title>
+<meta name="description" content="AI Fullstack Engineer · Backend · Automation. AI-агенты, RAG, автоматизации, fullstack-разработка от интерфейса до прода.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e12;
+  --bg-2: #12151b;
+  --bg-card: #14181f;
+  --bg-card-hover: #181d26;
+  --border: #232a35;
+  --border-bright: #2e3744;
+  --text: #e6eaf0;
+  --text-soft: #9aa6b8;
+  --text-mute: #5f6b7e;
+  --accent: #4ade9b;
+  --accent-2: #38bdf8;
+  --accent-glow: rgba(74, 222, 155, 0.15);
+  --warn: #fbbf24;
+  --crit: #f87171;
+  --grid: rgba(255,255,255,0.025);
+
+  --sans: 'Space Grotesk', -apple-system, sans-serif;
+  --body: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f7f8fa;
+  --bg-2: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fbfcfd;
+  --border: #e3e8ef;
+  --border-bright: #d0d8e3;
+  --text: #121620;
+  --text-soft: #4a5568;
+  --text-mute: #8995a8;
+  --accent: #0d9d6b;
+  --accent-2: #0284c7;
+  --accent-glow: rgba(13, 157, 107, 0.1);
+  --warn: #b45309;
+  --crit: #dc2626;
+  --grid: rgba(0,0,0,0.02);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  background: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .3s, color .3s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---- TOPBAR ---- */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-in {
+  max-width: 1100px; margin: 0 auto; padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--text); display: flex; align-items: center; gap: 9px;
+}
+.brand .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 10px var(--accent); animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.brand .path { color: var(--text-mute); }
+.brand .seg { color: var(--accent); }
+
+.controls { display: flex; align-items: center; gap: 8px; }
+.ctrl-btn {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  padding: 7px 11px; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 7px; color: var(--text-soft); cursor: pointer;
+  transition: all .18s; letter-spacing: .04em; display:flex; align-items:center; gap:6px;
+}
+.ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ctrl-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+.icon-sun{display:none} .icon-moon{display:block}
+[data-theme="light"] .icon-sun{display:block} [data-theme="light"] .icon-moon{display:none}
+
+/* ---- LAYOUT ---- */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+section { scroll-margin-top: 80px; }
+
+/* ---- HERO ---- */
+.hero { padding: 80px 0 56px; position: relative; }
+.hero-tag {
+  font-family: var(--mono); font-size: 12px; color: var(--accent);
+  letter-spacing: .14em; text-transform: uppercase; margin-bottom: 22px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-tag::before { content:''; width: 28px; height: 1px; background: var(--accent); }
+.hero h1 {
+  font-family: var(--sans); font-size: clamp(38px, 6.5vw, 68px);
+  font-weight: 700; line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 14px;
+}
+.hero h1 .grad {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero .role {
+  font-family: var(--mono); font-size: clamp(15px, 2.2vw, 20px); color: var(--text-soft);
+  margin-bottom: 28px; font-weight: 500;
+}
+.hero .role b { color: var(--accent); font-weight: 600; }
+.hero-lead {
+  font-size: 18px; line-height: 1.65; color: var(--text-soft); max-width: 680px; margin-bottom: 14px;
+}
+.hero-lead b { color: var(--text); font-weight: 600; }
+
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.btn {
+  font-family: var(--mono); font-size: 13px; font-weight: 600; padding: 12px 20px;
+  border-radius: 9px; cursor: pointer; transition: all .2s; display: inline-flex;
+  align-items: center; gap: 9px; letter-spacing: .02em;
+}
+.btn-primary { background: var(--accent); color: #08130d; border: 1px solid var(--accent); }
+.btn-primary:hover { box-shadow: 0 0 24px var(--accent-glow); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-bright); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* ---- METRICS STRIP ---- */
+.metrics {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin: 8px 0 40px;
+}
+.metric { background: var(--bg-card); padding: 22px 20px; transition: background .2s; }
+.metric:hover { background: var(--bg-card-hover); }
+.metric .num {
+  font-family: var(--mono); font-size: clamp(22px, 3vw, 30px); font-weight: 700;
+  color: var(--accent); line-height: 1; margin-bottom: 7px;
+}
+.metric .lbl { font-size: 12.5px; color: var(--text-mute); line-height: 1.4; }
+@media (max-width: 720px){ .metrics{ grid-template-columns: repeat(2,1fr);} }
+
+/* ---- SECTION HEADER ---- */
+.sec-head { margin: 56px 0 26px; }
+.sec-num {
+  font-family: var(--mono); font-size: 12px; color: var(--accent);
+  letter-spacing: .1em; margin-bottom: 8px;
+}
+.sec-title {
+  font-family: var(--sans); font-size: clamp(26px, 4vw, 36px); font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.1;
+}
+.sec-sub { color: var(--text-soft); margin-top: 10px; max-width: 620px; font-size: 15.5px; }
+
+/* ---- STACK ---- */
+.stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.stack-col {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 18px 20px;
+  transition: border-color .2s;
+}
+.stack-col:hover { border-color: var(--border-bright); }
+.stack-col h4 {
+  font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--accent); margin-bottom: 13px; display:flex; align-items:center; gap:7px;
+}
+.stack-col h4::before{ content:''; width:6px; height:6px; background:var(--accent); border-radius:1px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  font-family: var(--mono); font-size: 12px; padding: 4px 9px; border-radius: 6px;
+  background: var(--bg-2); border: 1px solid var(--border); color: var(--text-soft);
+}
+
+/* ---- PROJECTS ---- */
+.proj-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.fbtn {
+  font-family: var(--mono); font-size: 12px; padding: 7px 14px; border-radius: 8px;
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--text-soft);
+  cursor: pointer; transition: all .18s;
+}
+.fbtn:hover { border-color: var(--border-bright); color: var(--text); }
+.fbtn.active { background: var(--accent); color: #08130d; border-color: var(--accent); font-weight: 600; }
+
+.proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+@media (max-width: 820px){ .proj-grid{ grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 24px; transition: all .22s; position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+.card::before {
+  content:''; position: absolute; top:0; left:0; right:0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity .22s;
+}
+.card:hover::before { opacity: 1; }
+
+.card-cat {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 11px; display: inline-block;
+}
+.card h3 { font-family: var(--sans); font-size: 19px; font-weight: 600; line-height: 1.25; margin-bottom: 11px; }
+.card-task { font-size: 14px; color: var(--text-soft); line-height: 1.55; margin-bottom: 16px; }
+
+/* flow diagram */
+.flow {
+  font-family: var(--mono); font-size: 11.5px; background: var(--bg-2);
+  border: 1px solid var(--border); border-radius: 9px; padding: 13px 14px;
+  margin-bottom: 16px; line-height: 1.9; color: var(--text-soft); overflow-x: auto;
+}
+.flow .node { color: var(--text); white-space: nowrap; }
+.flow .arr { color: var(--accent); margin: 0 3px; }
+.flow .hl { color: var(--accent-2); }
+
+.card-metrics { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+.cm { display: flex; flex-direction: column; }
+.cm .v { font-family: var(--mono); font-size: 19px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.cm .k { font-size: 11px; color: var(--text-mute); margin-top: 3px; }
+
+.card-foot { margin-top: auto; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.card-tag {
+  font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 5px;
+  background: var(--bg-2); border: 1px solid var(--border); color: var(--text-mute);
+}
+
+.badge {
+  align-self: flex-start; display:inline-flex; align-items:center; gap:5px; font-family: var(--mono); font-size: 10.5px;
+  padding: 3px 8px; border-radius: 5px; margin-bottom: 14px; font-weight: 500;
+}
+.badge.prod { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.badge.prod::before{ content:''; width:5px;height:5px;border-radius:50%;background:var(--accent); }
+
+/* ---- APPROACH ---- */
+.appr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 760px){ .appr-grid{ grid-template-columns: 1fr; } }
+.appr {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px;
+}
+.appr .ic {
+  font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 12px;
+  width: 38px; height: 38px; border: 1px solid var(--border-bright); border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+.appr h4 { font-family: var(--sans); font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.appr p { font-size: 14px; color: var(--text-soft); line-height: 1.55; }
+
+/* ---- CONTACT ---- */
+.contact {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px;
+  padding: 44px 36px; margin: 20px 0 60px; text-align: center; position: relative; overflow: hidden;
+}
+.contact::before {
+  content:''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, var(--accent-glow), transparent 60%);
+}
+.contact-in { position: relative; }
+.contact h2 { font-family: var(--sans); font-size: clamp(24px, 4vw, 34px); font-weight: 700; margin-bottom: 12px; }
+.contact p { color: var(--text-soft); margin-bottom: 28px; font-size: 16px; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.clink {
+  font-family: var(--mono); font-size: 14px; padding: 13px 22px; border-radius: 10px;
+  background: var(--bg-2); border: 1px solid var(--border); color: var(--text);
+  transition: all .2s; display: inline-flex; align-items: center; gap: 9px;
+}
+.clink:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.clink svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+footer {
+  border-top: 1px solid var(--border); padding: 28px; text-align: center;
+  font-family: var(--mono); font-size: 12px; color: var(--text-mute);
+}
+
+.hidden { display: none !important; }
+
+/* reveal anim */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 600px){
+  .wrap{ padding: 0 18px; } .topbar-in{ padding: 12px 18px; }
+  .hero{ padding: 56px 0 40px; } .card{ padding: 20px; }
+  .contact{ padding: 32px 22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="dot"></span><span class="path">~/</span><span class="seg" data-i18n="brand">vlad_panov</span></div>
+    <div class="controls">
+      <button class="ctrl-btn" id="langBtn"><span id="langLabel">EN</span></button>
+      <button class="ctrl-btn" id="themeBtn">
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag" data-i18n="hero_tag">доступен для проектов и найма</div>
+    <h1 data-i18n="hero_name">Владислав Панов</h1>
+    <div class="role" data-i18n-html="hero_role"><b>AI</b> · Fullstack · Backend Engineer</div>
+    <p class="hero-lead" data-i18n-html="hero_lead">Собираю <b>AI-продукты целиком</b> — фронт, бэк, AI-слой, база, деплой. От идеи и ТЗ до прода и поддержки. Беру неопределённую задачу, проектирую архитектуру и довожу до рабочего результата.</p>
+    <p class="hero-lead" data-i18n-html="hero_lead2"><b>6+ лет в IT.</b> Сильные стороны: AI-агенты с ответами строго по источнику, RAG, автоматизация маркетплейсов, устойчивый сбор данных, production-надёжность.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary" data-i18n="cta_projects">Смотреть проекты</a>
+      <a href="#contact" class="btn btn-ghost" data-i18n="cta_contact">Связаться</a>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <div class="metrics">
+    <div class="metric"><div class="num">50+</div><div class="lbl" data-i18n="m_projects">проектов автоматизации</div></div>
+    <div class="metric"><div class="num">~2.8M</div><div class="lbl" data-i18n="m_ops">операций за ночной прогон</div></div>
+    <div class="metric"><div class="num">~20×</div><div class="lbl" data-i18n="m_speed">ускорение синхронизации</div></div>
+    <div class="metric"><div class="num">6+</div><div class="lbl" data-i18n="m_years">лет в IT</div></div>
+  </div>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="sec-head">
+      <div class="sec-num">01 — STACK</div>
+      <div class="sec-title" data-i18n="stack_title">Технический стек</div>
+      <div class="sec-sub" data-i18n="stack_sub">Полный цикл: от интерфейса до AI-слоя и деплоя. Технологии, с которыми работаю в продакшене.</div>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-col"><h4>Frontend</h4><div class="tags">
+        <span class="tag">Vue 3</span><span class="tag">Angular</span><span class="tag">TypeScript</span><span class="tag">Vite</span><span class="tag">PWA</span><span class="tag">Chrome Ext MV3</span>
+      </div></div>
+      <div class="stack-col"><h4>Backend</h4><div class="tags">
+        <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">asyncio</span><span class="tag">Node.js</span><span class="tag">REST API</span><span class="tag">webhooks</span>
+      </div></div>
+      <div class="stack-col"><h4>AI / LLM</h4><div class="tags">
+        <span class="tag">AI agents</span><span class="tag">RAG</span><span class="tag">tool use</span><span class="tag">function calling</span><span class="tag">structured output</span><span class="tag">MCP</span><span class="tag">Claude / Gemini / OpenAI</span>
+      </div></div>
+      <div class="stack-col"><h4>Data</h4><div class="tags">
+        <span class="tag">PostgreSQL</span><span class="tag">pgvector</span><span class="tag">Qdrant</span><span class="tag">SQL</span><span class="tag">Google Sheets</span>
+      </div></div>
+      <div class="stack-col"><h4>Infra / DevOps</h4><div class="tags">
+        <span class="tag">Docker</span><span class="tag">Nginx</span><span class="tag">systemd</span><span class="tag">VPS</span><span class="tag">HTTPS / SSL</span><span class="tag">Git</span>
+      </div></div>
+      <div class="stack-col"><h4>Automation</h4><div class="tags">
+        <span class="tag">n8n</span><span class="tag">Claude Code</span><span class="tag">Codex</span><span class="tag">browser automation</span><span class="tag">Telegram Bot API</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="sec-head">
+      <div class="sec-num">02 — PROJECTS</div>
+      <div class="sec-title" data-i18n="proj_title">Избранные проекты</div>
+      <div class="sec-sub" data-i18n="proj_sub">Production-решения: задача, архитектура, результат в цифрах. Большинство работает в проде на VPS. Часть проектов под NDA — детали и код на созвоне.</div>
+    </div>
+
+    <div class="proj-filter">
+      <button class="fbtn active" data-filter="all" data-i18n="f_all">Все</button>
+      <button class="fbtn" data-filter="ai" data-i18n="f_ai">AI-агенты</button>
+      <button class="fbtn" data-filter="auto" data-i18n="f_auto">Автоматизация</button>
+      <button class="fbtn" data-filter="data" data-i18n="f_data">Данные</button>
+      <button class="fbtn" data-filter="infra">Fullstack / Infra</button>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- P1 AI agent QA -->
+      <div class="card" data-tags="ai">
+        <span class="card-cat" data-i18n="p1_cat">AI-агент · RAG</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p1_title">AI-агент ответов покупателям на маркетплейсах</h3>
+        <p class="card-task" data-i18n="p1_task">Менеджеры вручную искали характеристики и отвечали покупателям — 5–10 минут на ответ, риск выдуманных данных и претензий.</p>
+        <div class="flow">
+          <span class="node" data-i18n="p1_f1">вопрос</span><span class="arr">›</span><span class="node" data-i18n="p1_f2">классификация</span><span class="arr">›</span><span class="node" data-i18n="p1_f3">поиск в карточке</span><span class="arr">›</span><span class="node hl">web-research</span><span class="arr">›</span><span class="node" data-i18n="p1_f4">ответ + источник</span><span class="arr">›</span><span class="node" data-i18n="p1_f5">fallback</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">5–10м › 30с</span><span class="k" data-i18n="p1_m1">время ответа</span></div>
+          <div class="cm"><span class="v">~15×</span><span class="k" data-i18n="p1_m2">быстрее</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Python</span><span class="card-tag">Gemini API</span><span class="card-tag">Claude API</span><span class="card-tag">pgvector</span><span class="card-tag">single-agent · tool use</span>
+        </div></div>
+      </div>
+
+      <!-- P2 OCR pipeline (NEW, flagship) -->
+      <div class="card" data-tags="ai data">
+        <span class="card-cat" data-i18n="p2_cat">AI · Computer Vision · OCR</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p2_title">Многодвижковый OCR-пайплайн для документов</h3>
+        <p class="card-task" data-i18n="p2_task">Поток ~40 000 отсканированных PDF, из которых нужно точно извлечь структурированные данные — там, где один OCR-движок ошибается на печатях, штампах и плохих сканах.</p>
+        <div class="flow">
+          <span class="node">PDF скан</span><span class="arr">›</span><span class="node hl">3 OCR-движка</span><span class="arr">›</span><span class="node" data-i18n="p2_f1">выбор лучшего</span><span class="arr">›</span><span class="node" data-i18n="p2_f2">классификация</span><span class="arr">›</span><span class="node" data-i18n="p2_f3">извлечение 20+ полей</span><span class="arr">›</span><span class="node" data-i18n="p2_f4">многослойная валидация</span><span class="arr">›</span><span class="node">DB</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">~40 000</span><span class="k" data-i18n="p2_m1">документов</span></div>
+          <div class="cm"><span class="v">20+</span><span class="k" data-i18n="p2_m2">полей извлечения</span></div>
+          <div class="cm"><span class="v">3</span><span class="k" data-i18n="p2_m3">OCR-движка</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Yandex OCR</span><span class="card-tag">GigaChat</span><span class="card-tag">Gemini Vision</span><span class="card-tag">Python</span><span class="card-tag">PostgreSQL</span>
+        </div></div>
+      </div>
+
+      <!-- P3 RAG scoring (NEW) -->
+      <div class="card" data-tags="ai data">
+        <span class="card-cat">RAG · Vector DB</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p3_title">RAG-платформа: контекст, скоринг, кеш ответов</h3>
+        <p class="card-task" data-i18n="p3_task">LLM каждый раз отвечала с нуля на однотипные вопросы и не имела единого контекста для оценки и принятия решений по данным.</p>
+        <div class="flow">
+          <span class="node" data-i18n="p3_f1">данные</span><span class="arr">›</span><span class="node" data-i18n="p3_f2">embeddings</span><span class="arr">›</span><span class="node hl">векторная БД</span><span class="arr">›</span><span class="node" data-i18n="p3_f3">семантический поиск</span><span class="arr">›</span><span class="node" data-i18n="p3_f4">контекст в LLM</span><span class="arr">›</span><span class="node" data-i18n="p3_f5">ответ / скоринг</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">~16×</span><span class="k" data-i18n="p3_m1">быстрее ответы</span></div>
+          <div class="cm"><span class="v">pgvector</span><span class="k" data-i18n="p3_m2">+ Qdrant · HNSW</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Python</span><span class="card-tag">embeddings</span><span class="card-tag">pgvector</span><span class="card-tag">Qdrant</span><span class="card-tag">semantic cache</span>
+        </div></div>
+      </div>
+
+      <!-- P4 Analytics (NEW) -->
+      <div class="card" data-tags="data ai">
+        <span class="card-cat" data-i18n="p4_cat">Аналитика · AI</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p4_title">AI-аналитика рынка и ценообразования</h3>
+        <p class="card-task" data-i18n="p4_task">Решения по ценам и ассортименту принимались вслепую — без системного анализа конкурентов, спроса и сезонности.</p>
+        <div class="flow">
+          <span class="node" data-i18n="p4_f1">сбор данных</span><span class="arr">›</span><span class="node" data-i18n="p4_f2">нормализация</span><span class="arr">›</span><span class="node hl">AI-анализ</span><span class="arr">›</span><span class="node" data-i18n="p4_f3">конкуренты · цены · сезонность</span><span class="arr">›</span><span class="node" data-i18n="p4_f4">итоговый отчёт</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v" data-i18n="p4_m1v">4 среза</span><span class="k" data-i18n="p4_m1">конкуренты · цены · спрос · продажи</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Python</span><span class="card-tag">LLM API</span><span class="card-tag">PostgreSQL</span><span class="card-tag">Google Sheets</span>
+        </div></div>
+      </div>
+
+      <!-- P5 sync -->
+      <div class="card" data-tags="auto">
+        <span class="card-cat" data-i18n="p5_cat">High-load автоматизация</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p5_title">Синхронизация остатков 20 магазинов</h3>
+        <p class="card-task" data-i18n="p5_task">Синхронизация между складами занимала 5–6 часов и падала без возможности безопасно перезапустить, теряя данные.</p>
+        <div class="flow">
+          <span class="node" data-i18n="p5_f1">донор</span><span class="arr">›</span><span class="node hl">asyncio worker pool</span><span class="arr">›</span><span class="node" data-i18n="p5_f2">чанки + 429-backoff</span><span class="arr">›</span><span class="node" data-i18n="p5_f3">self-healing</span><span class="arr">›</span><span class="node" data-i18n="p5_f4">склады</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">~2.8M</span><span class="k" data-i18n="p5_m1">операций/ночь</span></div>
+          <div class="cm"><span class="v">~20×</span><span class="k" data-i18n="p5_m2">ускорение</span></div>
+          <div class="cm"><span class="v">14 мин</span><span class="k" data-i18n="p5_m3">прогон</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Python asyncio</span><span class="card-tag">Seller API</span><span class="card-tag">systemd</span><span class="card-tag">self-healing · идемпотентность</span>
+        </div></div>
+      </div>
+
+      <!-- P6 archiving -->
+      <div class="card" data-tags="auto">
+        <span class="card-cat" data-i18n="p6_cat">High-load автоматизация</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p6_title">Движок массовых операций с гарантией целостности</h3>
+        <p class="card-task" data-i18n="p6_task">Массовые операции над десятками тысяч товаров должны выполняться атомарно — с гарантией, что повторный запуск после сбоя не создаст дублей и не потеряет данные.</p>
+        <div class="flow">
+          <span class="node" data-i18n="p6_f1">скан 96k SKU</span><span class="arr">›</span><span class="node hl">SHA-256 план</span><span class="arr">›</span><span class="node" data-i18n="p6_f2">prepare</span><span class="arr">›</span><span class="node" data-i18n="p6_f3">apply · идемпотентно</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">96 594</span><span class="k" data-i18n="p6_m1">SKU обработано</span></div>
+          <div class="cm"><span class="v">~45с</span><span class="k" data-i18n="p6_m2">время прогона</span></div>
+          <div class="cm"><span class="v">341</span><span class="k" data-i18n="p6_m3">unit-теста</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Node.js ESM</span><span class="card-tag">SHA-256</span><span class="card-tag">идемпотентность</span><span class="card-tag">unit-тесты</span>
+        </div></div>
+      </div>
+
+      <!-- P7 parser -->
+      <div class="card" data-tags="data">
+        <span class="card-cat" data-i18n="p7_cat">Data Engineering · парсинг</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p7_title">Промышленный парсинг-фреймворк</h3>
+        <p class="card-task" data-i18n="p7_task">Нужны цены, остатки и характеристики с сайтов крупных ритейлеров (DIY, электроника, мебель) — устойчиво, в обход анти-бот защиты, без хрупкого DOM-парсинга.</p>
+        <div class="flow">
+          <span class="node hl" data-i18n="p7_f1">внутренний API-слой</span><span class="arr">›</span><span class="node" data-i18n="p7_f2">авторизация · пагинация · ретраи</span><span class="arr">›</span><span class="node" data-i18n="p7_f3">нормализация</span><span class="arr">›</span><span class="node">PostgreSQL / CSV</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">50 000+</span><span class="k" data-i18n="p7_m1">строк за прогон</span></div>
+          <div class="cm"><span class="v" data-i18n="p7_m2v">4+ источника</span><span class="k" data-i18n="p7_m2">ритейлеров</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Python</span><span class="card-tag">Node.js</span><span class="card-tag">Playwright</span><span class="card-tag">reverse-eng API</span>
+        </div></div>
+      </div>
+
+      <!-- P8 legal -->
+      <div class="card" data-tags="auto infra">
+        <span class="card-cat" data-i18n="p8_cat">Browser automation</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p8_title">Автоматизация документооборота с госсистемами</h3>
+        <p class="card-task" data-i18n="p8_task">Ручная работа с госпорталами — сбор данных, проверки, подача документов с электронной подписью — занимала часы на каждую операцию.</p>
+        <div class="flow">
+          <span class="node hl" data-i18n="p8_f1">одна кнопка</span><span class="arr">›</span><span class="node" data-i18n="p8_f2">авторизация + сбор</span><span class="arr">›</span><span class="node" data-i18n="p8_f3">проверка</span><span class="arr">›</span><span class="node" data-i18n="p8_f4">подача с ЭЦП</span><span class="arr">›</span><span class="node">log</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">~до 50×</span><span class="k" data-i18n="p8_m1">ускорение процессов</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Chrome Ext MV3</span><span class="card-tag">Python</span><span class="card-tag">JS</span><span class="card-tag">ЭЦП · ГАС</span>
+        </div></div>
+      </div>
+
+      <!-- P9 infra -->
+      <div class="card" data-tags="infra">
+        <span class="card-cat" data-i18n="p9_cat">Infra · DevOps</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p9_title">Self-hosted VPN + Telegram-боты на VPS</h3>
+        <p class="card-task" data-i18n="p9_task">Своя инфраструктура: VPN-сервис и 20+ ботов в проде на нескольких VPS — Развёртка, настройка, мониторинг, бэкапы, авто-алерты.</p>
+        <div class="flow">
+          <span class="node">VPS</span><span class="arr">›</span><span class="node hl">Xray VLESS+Reality</span><span class="arr">›</span><span class="node" data-i18n="p9_f1">split-tunnel</span><span class="arr">›</span><span class="node" data-i18n="p9_f2">healthcheck + алерты</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">8+</span><span class="k" data-i18n="p9_m1">ботов в проде</span></div>
+          <div class="cm"><span class="v">24/7</span><span class="k" data-i18n="p9_m2">мониторинг + бэкапы</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Linux</span><span class="card-tag">systemd</span><span class="card-tag">3x-ui REST</span><span class="card-tag">cron</span><span class="card-tag">bash</span>
+        </div></div>
+      </div>
+
+      <!-- P10 frontend -->
+      <div class="card" data-tags="infra">
+        <span class="card-cat" data-i18n="p10_cat">Frontend · Fullstack</span>
+        <h3 data-i18n="p10_title">Веб-интерфейсы и SPA</h3>
+        <p class="card-task" data-i18n="p10_task">Фронтенд для внутренних инструментов и клиентских продуктов: SPA, админ-панели, PWA с интеграцией в backend и AI-слой.</p>
+        <div class="flow">
+          <span class="node hl">Vue 3 / Angular</span><span class="arr">›</span><span class="node" data-i18n="p10_f1">REST API</span><span class="arr">›</span><span class="node" data-i18n="p10_f2">адаптив · PWA</span><span class="arr">›</span><span class="node" data-i18n="p10_f3">деплой VPS</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v" data-i18n="p10_m1v">SPA · PWA</span><span class="k" data-i18n="p10_m1">админки · лендинги</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Vue 3</span><span class="card-tag">Angular</span><span class="card-tag">TypeScript</span><span class="card-tag">Vite</span><span class="card-tag">Docker · Nginx</span>
+        </div></div>
+      </div>
+
+          </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section id="approach">
+    <div class="sec-head">
+      <div class="sec-num">03 — APPROACH</div>
+      <div class="sec-title" data-i18n="appr_title">Как я работаю</div>
+    </div>
+    <div class="appr-grid">
+      <div class="appr">
+        <div class="ic">{ }</div>
+        <h4 data-i18n="appr1_t">Spec-driven</h4>
+        <p data-i18n="appr1_p">Deep research › ТЗ с edge cases › архитектура › реализация › тесты › прод. Не пишу код наугад — сначала проектирую.</p>
+      </div>
+      <div class="appr">
+        <div class="ic">⚙</div>
+        <h4 data-i18n="appr2_t">Production-надёжность</h4>
+        <p data-i18n="appr2_p">Self-healing, идемпотентность, безопасный перезапуск без дублей, восстановление после сбоев. Решения живут в проде, а не в демо.</p>
+      </div>
+      <div class="appr">
+        <div class="ic">◇</div>
+        <h4 data-i18n="appr3_t">AI с дисциплиной</h4>
+        <p data-i18n="appr3_p">Tool use, function calling, structured output. AI отвечает только по найденному контексту — без выдуманных данных, с трассировкой до источника.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact"><div class="contact-in">
+      <h2 data-i18n="contact_t">Давайте поговорим</h2>
+      <p data-i18n="contact_p">Открыт для проектов, подработки и найма. Часть проектов под NDA — детали, архитектуру и код покажу на созвоне.</p>
+      <div class="contact-links">
+        <a class="clink" href="https://t.me/VladisLovees" target="_blank"><svg viewBox="0 0 24 24"><path d="M21.5 4.5L2.5 12.5l5.5 2 2 6 3-4 5 4z"/></svg>@VladisLovees</a>
+        <a class="clink" href="mailto:vlad.panov777@gmail.com"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>vlad.panov777@gmail.com</a>
+        <a class="clink" href="tel:+79609013452"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+7 (960) 901-34-52</a>
+      </div>
+    </div></div>
+  </section>
+
+</div>
+
+<footer>
+  <span data-i18n="footer">© 2026 Владислав Панов · AI Fullstack Engineer · собрано вручную</span>
+</footer>
+
+<script>
+const I18N = {
+  ru: {
+    brand:"vlad_panov",
+    hero_tag:"доступен для проектов и найма",
+    hero_name:"Владислав Панов",
+    hero_role:"<b>AI</b> · Fullstack · Backend Engineer",
+    hero_lead:"Собираю <b>AI-продукты целиком</b> — фронт, бэк, AI-слой, база, деплой. От идеи и ТЗ до прода и поддержки. Беру неопределённую задачу, проектирую архитектуру и довожу до рабочего результата.",
+    hero_lead2:"<b>6+ лет в IT.</b> Сильные стороны: AI-агенты и RAG, computer vision и OCR, автоматизация маркетплейсов, high-load обработка данных, production-надёжность.",
+    cta_projects:"Смотреть проекты", cta_contact:"Связаться",
+    m_projects:"проектов автоматизации", m_ops:"операций за ночной прогон", m_speed:"ускорение процессов", m_years:"лет в IT",
+    stack_title:"Технический стек", stack_sub:"Полный цикл: от интерфейса до AI-слоя и деплоя. Технологии, с которыми работаю в продакшене.",
+    proj_title:"Избранные проекты", proj_sub:"Production-решения: задача, архитектура, результат в цифрах. Большинство работает в проде. Часть проектов под NDA — детали, архитектуру и код покажу на созвоне.",
+    f_all:"Все", f_ai:"AI / ML", f_auto:"Автоматизация", f_data:"Данные",
+    prod:"в проде",
+
+    p1_cat:"AI-агент · RAG", p1_title:"AI-агент ответов покупателям на маркетплейсах", p1_task:"Менеджеры вручную искали характеристики и отвечали покупателям — 5–10 минут на ответ, риск выдуманных данных и претензий.",
+    p1_f1:"вопрос",p1_f2:"классификация",p1_f3:"поиск в карточке",p1_f4:"ответ + источник",p1_f5:"fallback", p1_m1:"время ответа", p1_m2:"быстрее",
+
+    p2_cat:"AI · Computer Vision · OCR", p2_title:"Многодвижковый OCR-пайплайн для документов", p2_task:"Поток ~40 000 отсканированных PDF, из которых нужно точно извлечь структурированные данные — там, где один OCR-движок ошибается на печатях, штампах и плохих сканах.",
+    p2_f1:"выбор лучшего",p2_f2:"классификация",p2_f3:"извлечение 20+ полей",p2_f4:"многослойная валидация", p2_m1:"документов", p2_m2:"полей извлечения", p2_m3:"OCR-движка",
+
+    p3_title:"RAG-платформа: контекст, скоринг, кеш ответов", p3_task:"LLM каждый раз отвечала с нуля на однотипные вопросы и не имела единого контекста для оценки и принятия решений по данным.",
+    p3_f1:"данные",p3_f2:"embeddings",p3_f3:"семантический поиск",p3_f4:"контекст в LLM",p3_f5:"ответ / скоринг", p3_m1:"быстрее ответы", p3_m2:"+ Qdrant · HNSW",
+
+    p4_cat:"Аналитика · AI", p4_title:"AI-аналитика рынка и ценообразования", p4_task:"Решения по ценам и ассортименту принимались вслепую — без системного анализа конкурентов, спроса и сезонности.",
+    p4_f1:"сбор данных",p4_f2:"нормализация",p4_f3:"конкуренты · цены · сезонность",p4_f4:"итоговый отчёт", p4_m1:"конкуренты · цены · спрос · продажи", p4_m1v:"4 среза",
+
+    p5_cat:"High-load автоматизация", p5_title:"Синхронизация остатков 20 магазинов", p5_task:"Синхронизация между складами занимала 5–6 часов и падала без возможности безопасно перезапустить, теряя данные.",
+    p5_f1:"донор",p5_f2:"чанки + 429-backoff",p5_f3:"self-healing",p5_f4:"склады", p5_m1:"операций/ночь", p5_m2:"ускорение", p5_m3:"прогон",
+
+    p6_cat:"High-load автоматизация", p6_title:"Движок массовых операций с гарантией целостности", p6_task:"Массовые операции над десятками тысяч товаров должны выполняться атомарно — с гарантией, что повторный запуск после сбоя не создаст дублей и не потеряет данные.",
+    p6_f1:"скан 96k SKU",p6_f2:"prepare",p6_f3:"apply · идемпотентно", p6_m1:"SKU обработано", p6_m2:"время прогона", p6_m3:"unit-теста",
+
+    p7_cat:"Data Engineering · парсинг", p7_title:"Промышленный парсинг-фреймворк", p7_task:"Нужны цены, остатки и характеристики с сайтов крупных ритейлеров (DIY, электроника, мебель) — устойчиво, в обход анти-бот защиты, без хрупкого DOM-парсинга.",
+    p7_f1:"внутренний API-слой",p7_f2:"авторизация · пагинация · ретраи",p7_f3:"нормализация", p7_m1:"строк за прогон", p7_m2:"ритейлеров", p7_m2v:"4+ источника",
+
+    p8_cat:"Browser automation", p8_title:"Автоматизация документооборота с госсистемами", p8_task:"Ручная работа с госпорталами — сбор данных, проверки, подача документов с электронной подписью — занимала часы на каждую операцию.",
+    p8_f1:"одна кнопка",p8_f2:"авторизация + сбор",p8_f3:"проверка",p8_f4:"подача с ЭЦП", p8_m1:"ускорение процессов",
+
+    p9_cat:"Infra · DevOps", p9_title:"Self-hosted VPN + Telegram-боты на VPS", p9_task:"Своя инфраструктура: VPN-сервис и 8+ ботов в проде на одном VPS — провижининг, мониторинг, бэкапы, авто-алерты.",
+    p9_f1:"split-tunnel",p9_f2:"healthcheck + алерты", p9_m1:"ботов в проде", p9_m2:"мониторинг + бэкапы",
+
+    p10_cat:"Frontend · Fullstack", p10_title:"Веб-интерфейсы и SPA", p10_task:"Фронтенд для внутренних инструментов и клиентских продуктов: SPA, админ-панели, PWA с интеграцией в backend и AI-слой.",
+    p10_f1:"REST API",p10_f2:"адаптив · PWA",p10_f3:"деплой VPS", p10_m1:"админки · лендинги", p10_m1v:"SPA · PWA",
+
+    appr_title:"Как я работаю",
+    appr1_t:"Spec-driven", appr1_p:"Deep research › ТЗ с edge cases › архитектура › реализация › тесты › прод. Не пишу код наугад — сначала проектирую.",
+    appr2_t:"Production-надёжность", appr2_p:"Self-healing, идемпотентность, безопасный перезапуск без дублей, восстановление после сбоев. Решения живут в проде, а не в демо.",
+    appr3_t:"AI с дисциплиной", appr3_p:"Tool use, function calling, structured output. AI отвечает только по найденному контексту — без выдуманных данных, с трассировкой до источника.",
+    contact_t:"Давайте поговорим", contact_p:"Открыт для проектов, подработки и найма. Часть проектов под NDA — детали, архитектуру и код покажу на созвоне.",
+    footer:"© 2026 Владислав Панов · AI Fullstack Engineer · собрано вручную"
+  },
+  en: {
+    brand:"vlad_panov",
+    hero_tag:"open to projects & hiring",
+    hero_name:"Vladislav Panov",
+    hero_role:"<b>AI</b> · Fullstack · Backend Engineer",
+    hero_lead:"I build <b>complete AI products</b> — frontend, backend, AI layer, database, deployment. From idea and spec to production and support. I take an open-ended task, design the architecture, and ship a working result.",
+    hero_lead2:"<b>6+ years in IT.</b> Strengths: AI agents and RAG, computer vision and OCR, marketplace automation, high-load data processing, production reliability.",
+    cta_projects:"View projects", cta_contact:"Get in touch",
+    m_projects:"automation projects", m_ops:"operations per nightly run", m_speed:"process speedup", m_years:"years in IT",
+    stack_title:"Tech stack", stack_sub:"Full cycle: from UI to AI layer and deployment. Technologies I use in production.",
+    proj_title:"Selected projects", proj_sub:"Production solutions: problem, architecture, results in numbers. Most run in production. Some projects are under NDA — I'll show details, architecture and code on a call.",
+    f_all:"All", f_ai:"AI / ML", f_auto:"Automation", f_data:"Data",
+    prod:"in production",
+
+    p1_cat:"AI agent · RAG", p1_title:"AI agent for marketplace customer Q&A", p1_task:"Managers manually looked up specs and answered customers — 5–10 min per reply, risk of made-up data and complaints.",
+    p1_f1:"question",p1_f2:"classify",p1_f3:"search listing",p1_f4:"answer + source",p1_f5:"fallback", p1_m1:"response time", p1_m2:"faster",
+
+    p2_cat:"AI · Computer Vision · OCR", p2_title:"Multi-engine OCR pipeline for documents", p2_task:"A stream of ~40,000 scanned PDFs requiring accurate structured data extraction — where a single OCR engine fails on stamps, seals and poor scans.",
+    p2_f1:"pick best",p2_f2:"classify",p2_f3:"extract 20+ fields",p2_f4:"multi-layer validation", p2_m1:"documents", p2_m2:"extracted fields", p2_m3:"OCR engines",
+
+    p3_title:"RAG platform: context, scoring, answer cache", p3_task:"The LLM answered repetitive questions from scratch every time and had no unified context for evaluation and data-driven decisions.",
+    p3_f1:"data",p3_f2:"embeddings",p3_f3:"semantic search",p3_f4:"context into LLM",p3_f5:"answer / scoring", p3_m1:"faster answers", p3_m2:"+ Qdrant · HNSW",
+
+    p4_cat:"Analytics · AI", p4_title:"AI analytics for market & pricing", p4_task:"Pricing and assortment decisions were made blind — without systematic analysis of competitors, demand and seasonality.",
+    p4_f1:"data collection",p4_f2:"normalization",p4_f3:"competitors · prices · seasonality",p4_f4:"final report", p4_m1:"competitors · prices · demand · sales", p4_m1v:"4 angles",
+
+    p5_cat:"High-load automation", p5_title:"Stock sync across 20 stores", p5_task:"Sync between warehouses took 5–6 hours and crashed with no safe way to restart, losing data.",
+    p5_f1:"donor",p5_f2:"chunks + 429-backoff",p5_f3:"self-healing",p5_f4:"warehouses", p5_m1:"ops/night", p5_m2:"speedup", p5_m3:"run",
+
+    p6_cat:"High-load automation", p6_title:"Bulk operations engine with integrity guarantee", p6_task:"Bulk operations over tens of thousands of products must run atomically — guaranteeing a re-run after a crash creates no duplicates and loses no data.",
+    p6_f1:"scan 96k SKU",p6_f2:"prepare",p6_f3:"apply · idempotent", p6_m1:"SKU processed", p6_m2:"run time", p6_m3:"unit tests",
+
+    p7_cat:"Data Engineering · scraping", p7_title:"Industrial-grade scraping framework", p7_task:"Needed prices, stock and specs from large retailer sites (DIY, electronics, furniture) — resilient, bypassing anti-bot, without brittle DOM parsing.",
+    p7_f1:"internal API layer",p7_f2:"auth · pagination · retries",p7_f3:"normalization", p7_m1:"rows per run", p7_m2:"retailers", p7_m2v:"4+ sources",
+
+    p8_cat:"Browser automation", p8_title:"Document workflow automation with gov systems", p8_task:"Manual work with government portals — data collection, checks, filing documents with e-signature — took hours per operation.",
+    p8_f1:"one click",p8_f2:"auth + collect",p8_f3:"verify",p8_f4:"file with e-signature", p8_m1:"process speedup",
+
+    p9_cat:"Infra · DevOps", p9_title:"Self-hosted VPN + Telegram bots on VPS", p9_task:"Own infrastructure: a VPN service and 8+ bots in production on a single VPS — provisioning, monitoring, backups, auto-alerts.",
+    p9_f1:"split-tunnel",p9_f2:"healthcheck + alerts", p9_m1:"bots in production", p9_m2:"monitoring + backups",
+
+    p10_cat:"Frontend · Fullstack", p10_title:"Web interfaces & SPA", p10_task:"Frontend for internal tools and client products: SPA, admin panels, PWA integrated with backend and the AI layer.",
+    p10_f1:"REST API",p10_f2:"responsive · PWA",p10_f3:"VPS deploy", p10_m1:"admin panels · landings", p10_m1v:"SPA · PWA",
+
+    appr_title:"How I work",
+    appr1_t:"Spec-driven", appr1_p:"Deep research › spec with edge cases › architecture › implementation › tests › production. I don't code blindly — I design first.",
+    appr2_t:"Production reliability", appr2_p:"Self-healing, idempotency, safe restart without duplicates, recovery after failures. Solutions live in production, not in demos.",
+    appr3_t:"Disciplined AI", appr3_p:"Tool use, function calling, structured output. AI answers strictly from retrieved context — no made-up data, with traceability to the source.",
+    contact_t:"Let's talk", contact_p:"Open to projects, part-time and full-time. Some projects are under NDA — I'll show details, architecture and code on a call.",
+    footer:"© 2026 Vladislav Panov · AI Fullstack Engineer · handcrafted"
+  }
+};
+
+let lang = 'ru';
+function applyLang(l){
+  lang = l;
+  const d = I18N[l];
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n'); if(d[k]!==undefined) el.textContent = d[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const k = el.getAttribute('data-i18n-html'); if(d[k]!==undefined) el.innerHTML = d[k];
+  });
+  document.getElementById('langLabel').textContent = (l==='ru')?'EN':'RU';
+}
+document.getElementById('langBtn').addEventListener('click', ()=> applyLang(lang==='ru'?'en':'ru'));
+
+// theme
+const tBtn = document.getElementById('themeBtn');
+tBtn.addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', cur==='dark'?'light':'dark');
+});
+
+// filters
+document.querySelectorAll('.fbtn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const f = b.getAttribute('data-filter');
+    document.querySelectorAll('.card').forEach(c=>{
+      const tags = c.getAttribute('data-tags')||'';
+      c.classList.toggle('hidden', !(f==='all'||tags.includes(f)));
+    });
+  });
+});
+
+// reveal on scroll
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.08});
+document.querySelectorAll('.card, .stack-col, .appr, .metric').forEach(el=>{ el.classList.add('reveal'); io.observe(el); });
+
+applyLang('ru');
+</script>
+
+</body>
+</html>
