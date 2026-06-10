@@ -393,6 +393,25 @@ footer {
 
     <div class="proj-grid">
 
+      <!-- P11 cert-matching RAG (flagship) -->
+      <div class="card" data-tags="ai data">
+        <span class="card-cat" data-i18n="p11_cat">AI-агент · brand-scoped RAG</span>
+        <span class="badge prod" data-i18n="prod">в проде</span>
+        <h3 data-i18n="p11_title">Матчинг товаров с сертификатами ДС/СС (brand-scoped RAG)</h3>
+        <p class="card-task" data-i18n="p11_task">Десятки тысяч товаров маркетплейса нужно привязать к действующим сертификатам и декларациям соответствия. Нужный документ часто не в своей базе, а в реестре ФСА у стороннего бренда — и привязать неверный нельзя (штраф по ФЗ-289).</p>
+        <div class="flow">
+          <span class="node" data-i18n="p11_f1">товар Ozon</span><span class="arr">›</span><span class="node hl" data-i18n="p11_f2">brand-scope пре-фильтр</span><span class="arr">›</span><span class="node" data-i18n="p11_f3">добор из реестра ФСА</span><span class="arr">›</span><span class="node">dense+BM25+RRF</span><span class="arr">›</span><span class="node" data-i18n="p11_f4">LLM-судья · чеклист · abstain</span><span class="arr">›</span><span class="node">covered / uncertain</span>
+        </div>
+        <div class="card-metrics">
+          <div class="cm"><span class="v">96 355</span><span class="k" data-i18n="p11_m1">товаров в прогоне</span></div>
+          <div class="cm"><span class="v">~$2</span><span class="k" data-i18n="p11_m2">LLM на всю сеть (~8k вызовов)</span></div>
+          <div class="cm"><span class="v">×4–9</span><span class="k" data-i18n="p11_m3">меньше LLM-вызовов · дедуп</span></div>
+        </div>
+        <div class="card-foot"><div class="card-tags">
+          <span class="card-tag">Python</span><span class="card-tag">Gemini API</span><span class="card-tag">embeddings · BM25 · RRF</span><span class="card-tag">structured output</span><span class="card-tag">numpy · rank_bm25</span>
+        </div></div>
+      </div>
+
       <!-- P1 AI agent QA -->
       <div class="card" data-tags="ai">
         <span class="card-cat" data-i18n="p1_cat">AI-агент · RAG</span>
@@ -665,6 +684,9 @@ const I18N = {
     p10_cat:"Frontend · Fullstack", p10_title:"Веб-интерфейсы и SPA", p10_task:"Фронтенд для внутренних инструментов и клиентских продуктов: SPA, админ-панели, PWA с интеграцией в backend и AI-слой.",
     p10_f1:"REST API",p10_f2:"адаптив · PWA",p10_f3:"деплой VPS", p10_m1:"админки · лендинги", p10_m1v:"SPA · PWA",
 
+    p11_cat:"AI-агент · brand-scoped RAG", p11_title:"Матчинг товаров с сертификатами ДС/СС (brand-scoped RAG)", p11_task:"Десятки тысяч товаров маркетплейса нужно привязать к действующим сертификатам и декларациям соответствия. Нужный документ часто не в своей базе, а в реестре ФСА у стороннего бренда — и привязать неверный нельзя (штраф по ФЗ-289).",
+    p11_f1:"товар Ozon",p11_f2:"brand-scope пре-фильтр",p11_f3:"добор из реестра ФСА",p11_f4:"LLM-судья · чеклист · abstain", p11_m1:"товаров в прогоне", p11_m2:"LLM на всю сеть (~8k вызовов)", p11_m3:"меньше LLM-вызовов · дедуп",
+
     appr_title:"Как я работаю",
     appr1_t:"Spec-driven", appr1_p:"Deep research › ТЗ с edge cases › архитектура › реализация › тесты › прод. Не пишу код наугад — сначала проектирую.",
     appr2_t:"Production-надёжность", appr2_p:"Self-healing, идемпотентность, безопасный перезапуск без дублей, восстановление после сбоев. Решения живут в проде, а не в демо.",
@@ -715,6 +737,9 @@ const I18N = {
 
     p10_cat:"Frontend · Fullstack", p10_title:"Web interfaces & SPA", p10_task:"Frontend for internal tools and client products: SPA, admin panels, PWA integrated with backend and the AI layer.",
     p10_f1:"REST API",p10_f2:"responsive · PWA",p10_f3:"VPS deploy", p10_m1:"admin panels · landings", p10_m1v:"SPA · PWA",
+
+    p11_cat:"AI agent · brand-scoped RAG", p11_title:"Product ↔ conformity-certificate matching (brand-scoped RAG)", p11_task:"Tens of thousands of marketplace products must be linked to valid conformity certificates and declarations. The right document often isn't in the local base but in the FSA registry under a third-party brand — and attaching the wrong one is not an option (FZ-289 penalty).",
+    p11_f1:"product",p11_f2:"brand-scope pre-filter",p11_f3:"fetch from FSA registry",p11_f4:"LLM judge · checklist · abstain", p11_m1:"products in the run", p11_m2:"LLM · entire network (~8k calls)", p11_m3:"fewer LLM calls · dedup",
 
     appr_title:"How I work",
     appr1_t:"Spec-driven", appr1_p:"Deep research › spec with edge cases › architecture › implementation › tests › production. I don't code blindly — I design first.",
