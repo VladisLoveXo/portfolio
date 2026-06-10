@@ -223,6 +223,7 @@ section { scroll-margin-top: 80px; }
   font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase;
   color: var(--accent); margin-bottom: 11px; display: inline-block;
 }
+.card-cat.hot { font-weight: 700; font-size: 12px; letter-spacing: .1em; text-shadow: 0 0 14px rgba(74,222,155,.5); }
 .card h3 { font-family: var(--sans); font-size: 19px; font-weight: 600; line-height: 1.25; margin-bottom: 11px; }
 .card-task { font-size: 14px; color: var(--text-soft); line-height: 1.55; margin-bottom: 16px; }
 
@@ -395,7 +396,7 @@ footer {
 
       <!-- P11 cert-matching RAG (flagship) -->
       <div class="card" data-tags="ai data">
-        <span class="card-cat" data-i18n="p11_cat">AI-агент · brand-scoped RAG</span>
+        <span class="card-cat hot" data-i18n="p11_cat">AI-агент · brand-scoped RAG</span>
         <span class="badge prod" data-i18n="prod">в проде</span>
         <h3 data-i18n="p11_title">Матчинг товаров с сертификатами ДС/СС (brand-scoped RAG)</h3>
         <p class="card-task" data-i18n="p11_task">Десятки тысяч товаров маркетплейса нужно привязать к действующим сертификатам и декларациям соответствия. Нужный документ часто не в своей базе, а в реестре ФСА у стороннего бренда — и привязать неверный нельзя (штраф по ФЗ-289).</p>
@@ -403,7 +404,7 @@ footer {
           <span class="node" data-i18n="p11_f1">товар Ozon</span><span class="arr">›</span><span class="node hl" data-i18n="p11_f2">brand-scope пре-фильтр</span><span class="arr">›</span><span class="node" data-i18n="p11_f3">добор из реестра ФСА</span><span class="arr">›</span><span class="node">dense+BM25+RRF</span><span class="arr">›</span><span class="node" data-i18n="p11_f4">LLM-судья · чеклист · abstain</span><span class="arr">›</span><span class="node">covered / uncertain</span>
         </div>
         <div class="card-metrics">
-          <div class="cm"><span class="v">96 355</span><span class="k" data-i18n="p11_m1">товаров в прогоне</span></div>
+          <div class="cm"><span class="v">900 524</span><span class="k" data-i18n="p11_m1">товаров в прогоне</span></div>
           <div class="cm"><span class="v">~$2</span><span class="k" data-i18n="p11_m2">LLM на всю сеть (~8k вызовов)</span></div>
           <div class="cm"><span class="v">×4–9</span><span class="k" data-i18n="p11_m3">меньше LLM-вызовов · дедуп</span></div>
         </div>
